@@ -1,10 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,500;1,600&family=Nunito:wght@200;300;500;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap");
 $color_1: white;
 $font-family_1: inherit;
 $input_color_1: #242424;
 $input_background-color_1: #f5f5f5;
 $list-border-bottom: 1px solid #dad9d9;
-$list_font_size: 16px;
+$list_font_size: 18px;
 $btn-lh: 38px;
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+@mixin list-li {
+  margin-top: 10px;
+  text-align: left;
+  padding: 15px;
+  border-bottom: $list-border-bottom;
+  font-size: $list_font_size;
+  padding-right: 0px;
+}
+@mixin button {
+  outline: none;
+  border: none;
+  float: right;
+  color: #fff;
+}
+@mixin counter {
+  position: absolute;
+  right: 0;
+  top: 10px;
+  font-size: 18px;
+  font-weight: 400;
+  border-radius: 50%;
+  color: $color_1;
+  width: 25px;
+  height: 25px;
+}
 ul {
   list-style: none;
 }
@@ -13,12 +44,20 @@ ul {
   margin: auto;
   width: initial;
   text-align: center;
-
+  .list-title {
+    position: relative;
+    border-bottom: $list-border-bottom;
+    .list-item {
+      @include counter();
+      background-color: #5dc75b;
+    }
+  }
   .cssbuttons-io-button {
     margin-left: 20px;
     font-family: $font-family_1;
     font-weight: 500;
     font-size: 16px;
+    border-radius: 10px;
     line-height: $btn-lh;
     color: $color_1;
     background: #ad5389;
@@ -28,7 +67,6 @@ ul {
       rgba(102, 247, 113, 1) 100%
     );
     border: none;
-    box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
     letter-spacing: 0.05em;
     border-radius: 5px;
     svg {
@@ -48,11 +86,10 @@ ul {
     color: $input_color_1;
     padding: 0.15rem 0.5rem;
     min-height: 40px;
-    border-radius: 4px;
+    border-radius: 10px;
     outline: none;
     border: none;
     line-height: 1.15;
-    box-shadow: 0px 10px 20px -18px;
   }
   input {
     &:focus {
@@ -66,15 +103,64 @@ ul {
   .todo-list-ul {
     padding: 0px;
     li {
-      margin-top: 10px;
-      text-align: left;
-      padding: 15px;
-      border-bottom: $list-border-bottom;
-      font-size: $list_font_size;
-      padding-right:0px ;
-      .delete-btn {
-        float: right;
+      @include list-li;
+      background-color: rgba(65, 117, 214, 0.04);
+      border-radius: 10px;
+    }
+    .delete-btn {
+      @include button;
+      color: red;
+    }
+    .complete-btn {
+      @include button;
+      color: green;
+    }
+  }
+}
+.done-container {
+  position: relative;
+  display: table;
+  margin: auto;
+  width: 50%;
+  text-align: center;
+  .list-title {
+    position: relative;
+    border-bottom: $list-border-bottom;
+    .list-item {
+      @include counter();
+      background-color: #5b81c7;
+    }
+  }
+  .done-list-ul {
+    padding: 0px;
+    li {
+      @include list-li;
+      width: 100%;
+      background-color: rgba(65, 117, 214, 0.04);
+      border-radius: 10px;
+    }
+    .undo-btn {
+      @include button;
+      svg {
+        color: rgb(0, 34, 255);
       }
     }
+  }
+}
+.border-x {
+  border-radius: 30px;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  padding: 2px;
+  opacity: 0.7;
+  background-color: #242424;
+}
+
+@media screen and (max-width: 992px) {
+  .border-x {
+    height: auto !important;
+    width: 100%;
+    position: static;
   }
 }
