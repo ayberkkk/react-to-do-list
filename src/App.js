@@ -1,16 +1,62 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "./App.css";
 import { Container, Row, Col } from "reactstrap";
+import {
+  FaCheck,
+  FaTrashAlt,
+  FaPlus,
+  FaUndo,
+  FaEdit,
+  FaRegSave,
+s} from "react-icons/fa";
 
 function App() {
-  const [taskList, setTaskList] = useState([]);
+  const [taskList, setTaskList] = useState(
+    JSON.parse(localStorage.getItem("taskList")) || []
+  );
+  const [editIndex, setEditIndex] = useState(null);
+  const [editValue, setEditValue] = useState("");
   const [newTask, setNewTask] = useState("");
   const [completedTodos, setCompletedTodos] = useState([]);
 
   const itemCount = taskList.length;
   const completeItemCount = completedTodos.length;
+
+  const handleAdd = (event) => {
+    event.preventDefault();
+    const newTask = event.target.elements.task.value;
+    if (newTask) {
+      setTaskList([...taskList, newTask]);
+      localStorage.setItem("taskList", JSON.stringify([...taskList, newTask]));
+      event.target.reset();
+    }
+  };
+
+  const handleDelete = (index) => {
+    const newTaskList = [...taskList];
+    newTaskList.splice(index, 1);
+    setTaskList(newTaskList);
+    localStorage.setItem("taskList", JSON.stringify(newTaskList));
+  };
+
+  const handleEditStart = (index) => {
+    setEditIndex(index);
+    setEditValue(taskList[index]);
+  };
+
+  const handleEditChange = (event) => {
+    setEditValue(event.target.value);
+  };
+
+  const handleEditSave = (index) => {
+    const newTaskList = [...taskList];
+    newTaskList[index] = editValue;
+    setTaskList(newTaskList);
+    localStorage.setItem("taskList", JSON.stringify(newTaskList));
+    setEditIndex(null);
+  };
 
   const handleChange = (e) => {
     setNewTask(e.target.value);
@@ -23,13 +69,6 @@ function App() {
       setTaskList([...taskList, newTask]);
       setNewTask("");
     }
-  };
-
-  //task deleted
-  const handleDelete = (index) => {
-    const newList = [...taskList];
-    newList.splice(index, 1);
-    setTaskList(newList);
   };
 
   // task completed
@@ -61,24 +100,12 @@ function App() {
               <input
                 class="input"
                 name="text"
-                placeholder="..."
+                placeholder="Add new task"
                 value={newTask}
                 onChange={handleChange}
               />
               <button type="submit" class="cssbuttons-io-button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 30 30"
-                  width="30"
-                  height="30"
-                >
-                  <path fill="none" d="M0 0h30v30H0z"></path>
-                  <path
-                    fill="currentColor"
-                    d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"
-                  ></path>
-                </svg>
-                <span>Add</span>
+                <FaPlus className="icon" />
               </button>
             </form>
             <ul className="todo-list-ul">
@@ -86,41 +113,47 @@ function App() {
                 <li key={index}>
                   <button
                     type="button"
-                    class="btn delete-btn"
+                    className="btn delete-btn"
                     onClick={() => handleDelete(index)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="30"
-                      height="30"
-                      fill="currentColor"
-                      class="bi bi-trash"
-                      viewBox="0 0 30 30"
-                    >
-                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
-                      <path
-                        fill-rule="evenodd"
-                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                      ></path>
-                    </svg>
+                    <FaTrashAlt className="icon" />
                   </button>
                   <button
                     type="button"
-                    class="btn complete-btn"
+                    className="btn complete-btn"
                     onClick={() => handleComplete(index)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="30"
-                      height="30"
-                      fill="currentColor"
-                      className="bi bi-trash"
-                      viewBox="0 0 30 30"
-                    >
-                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-                    </svg>
+                    <FaCheck className="icon" />
                   </button>
-                  {task}
+                  {editIndex === index ? (
+                    <>
+                      <input
+                        type="text"
+                        value={editValue}
+                        onChange={handleEditChange}
+                      />
+                      <button
+                        type="button"
+                        className="btn edit-btn"
+                        onClick={() => handleEditSave(index)}
+                      >
+                        <FaRegSave className="icon" />
+                      </button>
+                    </>
+                  ) : (
+                    <span>{task}</span>
+                  )}
+                  <button
+                    type="button"
+                    className="btn edit-btn"
+                    onClick={() => handleEditStart(index)}
+                  >
+                    {editIndex === index ? (
+                      <FaRegSave className="icon" />
+                    ) : (
+                      <FaEdit className="icon" />
+                    )}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -142,18 +175,7 @@ function App() {
                     className="btn undo-btn"
                     onClick={() => handleUndo(index)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="30"
-                      height="30"
-                      fill="currentColor"
-                      viewBox="0 0 30 30"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"
-                      ></path>
-                    </svg>
+                    <FaUndo className="icon" />
                   </button>
                 </li>
               ))}

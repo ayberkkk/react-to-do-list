@@ -6,9 +6,10 @@ $input_background-color_1: #f5f5f5;
 $list-border-bottom: 1px solid #dad9d9;
 $list_font_size: 18px;
 $btn-lh: 38px;
+$green:linear-gradient(0deg,rgb(12, 255, 81) 0%,rgb(30, 255, 49) 100%);
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 @mixin list-li {
@@ -29,8 +30,8 @@ body {
   position: absolute;
   right: 0;
   top: 10px;
-  font-size: 18px;
-  font-weight: 400;
+  font-size: 20px;
+  font-weight: 800;
   border-radius: 50%;
   color: $color_1;
   width: 25px;
@@ -42,63 +43,50 @@ ul {
 .todo-container {
   display: table;
   margin: auto;
-  width: initial;
+  width: 50%;
   text-align: center;
+  position: relative;
+
   .list-title {
-    position: relative;
     border-bottom: $list-border-bottom;
     .list-item {
       @include counter();
-      background-color: #5dc75b;
+      background: $green;
     }
   }
   .cssbuttons-io-button {
-    margin-left: 20px;
     font-family: $font-family_1;
     font-weight: 500;
     font-size: 16px;
-    border-radius: 10px;
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
     line-height: $btn-lh;
     color: $color_1;
-    background: #ad5389;
-    background: linear-gradient(
-      0deg,
-      rgba(20, 167, 62, 1) 0%,
-      rgba(102, 247, 113, 1) 100%
-    );
+    background: $green;
     border: none;
     letter-spacing: 0.05em;
     border-radius: 5px;
-    svg {
-      margin-right: 6px;
+    .icon {
+      color: $green;
     }
     &:hover {
       box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
     }
-    &:active {
-      box-shadow: 0 0.3em 1em -0.5em #14a73e98;
-    }
   }
 
   .input {
-    max-width: 190px;
+    max-width: 100%;
+    width: 80%;
     background-color: $input_background-color_1;
     color: $input_color_1;
     padding: 0.15rem 0.5rem;
     min-height: 40px;
-    border-radius: 10px;
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
     outline: none;
     border: none;
     line-height: 1.15;
-  }
-  input {
-    &:focus {
-      border-bottom: 2px solid #5dc75b;
-      border-radius: 4px 4px 2px 2px;
-    }
-    &:hover {
-      outline: 1px solid lightgrey;
-    }
+    margin-left: 0px;
   }
   .todo-list-ul {
     padding: 0px;
@@ -107,13 +95,17 @@ ul {
       background-color: rgba(65, 117, 214, 0.04);
       border-radius: 10px;
     }
+    .edit-btn {
+      @include button;
+      color: rgb(0, 68, 255);
+    }
     .delete-btn {
       @include button;
       color: red;
     }
     .complete-btn {
       @include button;
-      color: green;
+      color: rgb(30, 255, 49) ;
     }
   }
 }
@@ -141,8 +133,8 @@ ul {
     }
     .undo-btn {
       @include button;
-      svg {
-        color: rgb(0, 34, 255);
+      .icon {
+        color: #5b81c7;
       }
     }
   }
@@ -155,6 +147,9 @@ ul {
   padding: 2px;
   opacity: 0.7;
   background-color: #242424;
+}
+.icon {
+  font-size: 20px;
 }
 
 @media screen and (max-width: 992px) {
