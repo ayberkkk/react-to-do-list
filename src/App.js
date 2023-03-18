@@ -121,7 +121,7 @@ function App() {
                     <>
                       <input
                         type="text"
-                        className="input"
+                        className="edit-input"
                         value={editValue}
                         onChange={handleEditChange}
                       />
