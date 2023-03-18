@@ -2,7 +2,7 @@
 $color_1: white;
 $font-family_1: inherit;
 $input_color_1: #242424;
-$input_background-color_1: #f5f5f5;
+$input_background-color_1: rgba(65, 117, 214, 0.04);
 $list-border-bottom: 1px solid #dad9d9;
 $list_font_size: 18px;
 $btn-lh: 38px;
@@ -10,6 +10,7 @@ $green:linear-gradient(0deg,rgb(12, 255, 81) 0%,rgb(30, 255, 49) 100%);
 
 body {
   font-family: "Montserrat", sans-serif;
+  background-color: rgba(65, 117, 214, 0.04);
 }
 
 @mixin list-li {
@@ -43,7 +44,7 @@ ul {
 .todo-container {
   display: table;
   margin: auto;
-  width: 50%;
+  width: 60%;
   text-align: center;
   position: relative;
 
@@ -113,7 +114,7 @@ ul {
   position: relative;
   display: table;
   margin: auto;
-  width: 50%;
+  width: 60%;
   text-align: center;
   .list-title {
     position: relative;

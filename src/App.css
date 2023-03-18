@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,500;1,600&family=Nunito:wght@200;300;500;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap");
 body {
   font-family: "Montserrat", sans-serif;
+  background-color: rgba(65, 117, 214, 0.04);
 }
 
 ul {
@@ -10,7 +11,7 @@ ul {
 .todo-container {
   display: table;
   margin: auto;
-  width: 50%;
+  width: 60%;
   text-align: center;
   position: relative;
 }
@@ -51,7 +52,7 @@ ul {
 .todo-container .input {
   max-width: 100%;
   width: 80%;
-  background-color: #f5f5f5;
+  background-color: rgba(65, 117, 214, 0.04);
   color: #242424;
   padding: 0.15rem 0.5rem;
   min-height: 40px;
@@ -101,7 +102,7 @@ ul {
   position: relative;
   display: table;
   margin: auto;
-  width: 50%;
+  width: 60%;
   text-align: center;
 }
 .done-container .list-title {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "./App.css";
@@ -10,7 +10,7 @@ import {
   FaUndo,
   FaEdit,
   FaRegSave,
-s} from "react-icons/fa";
+} from "react-icons/fa";
 
 function App() {
   const [taskList, setTaskList] = useState(
@@ -19,37 +19,31 @@ function App() {
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [newTask, setNewTask] = useState("");
-  const [completedTodos, setCompletedTodos] = useState([]);
+  const [completedTodos, setCompletedTodos] = useState(
+    JSON.parse(localStorage.getItem("completedTodos")) || []
+  );
+  useEffect(() => {
+    localStorage.setItem("completedTodos", JSON.stringify(completedTodos));
+  }, [completedTodos]);
 
   const itemCount = taskList.length;
   const completeItemCount = completedTodos.length;
-
-  const handleAdd = (event) => {
-    event.preventDefault();
-    const newTask = event.target.elements.task.value;
-    if (newTask) {
-      setTaskList([...taskList, newTask]);
-      localStorage.setItem("taskList", JSON.stringify([...taskList, newTask]));
-      event.target.reset();
-    }
-  };
-
   const handleDelete = (index) => {
     const newTaskList = [...taskList];
     newTaskList.splice(index, 1);
     setTaskList(newTaskList);
     localStorage.setItem("taskList", JSON.stringify(newTaskList));
   };
-
+  // task item edit
   const handleEditStart = (index) => {
     setEditIndex(index);
     setEditValue(taskList[index]);
   };
-
+  // task item edit change
   const handleEditChange = (event) => {
     setEditValue(event.target.value);
   };
-
+  // task item edit save
   const handleEditSave = (index) => {
     const newTaskList = [...taskList];
     newTaskList[index] = editValue;
@@ -57,11 +51,10 @@ function App() {
     localStorage.setItem("taskList", JSON.stringify(newTaskList));
     setEditIndex(null);
   };
-
+  //  task item change
   const handleChange = (e) => {
     setNewTask(e.target.value);
   };
-
   // new task item added
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,21 +63,20 @@ function App() {
       setNewTask("");
     }
   };
-
   // task completed
   function handleComplete(index) {
-    const newTask = [...taskList];
-    const completedTodo = newTask.splice(index, 1);
-    setTaskList(newTask);
+    const newTaskList = [...taskList];
+    const completedTodo = newTaskList.splice(index, 1)[0];
+    setTaskList(newTaskList);
+    localStorage.setItem("taskList", JSON.stringify(newTaskList));
     setCompletedTodos([...completedTodos, completedTodo]);
   }
-
   //task changed to completed list
   function handleUndo(index) {
     const newCompletedTodos = [...completedTodos];
     const todoToUndo = newCompletedTodos.splice(index, 1);
     setCompletedTodos(newCompletedTodos);
-    setTaskList([...taskList, todoToUndo]);
+    setTaskList([...taskList, ...todoToUndo]);
   }
 
   return (
@@ -98,7 +90,7 @@ function App() {
             </h1>
             <form onSubmit={handleSubmit}>
               <input
-                class="input"
+                className="input"
                 name="text"
                 placeholder="Add new task"
                 value={newTask}
@@ -129,6 +121,7 @@ function App() {
                     <>
                       <input
                         type="text"
+                        className="input"
                         value={editValue}
                         onChange={handleEditChange}
                       />
@@ -141,19 +134,17 @@ function App() {
                       </button>
                     </>
                   ) : (
-                    <span>{task}</span>
+                    <>
+                      <span>{task}</span>
+                      <button
+                        type="button"
+                        className="btn edit-btn"
+                        onClick={() => handleEditStart(index)}
+                      >
+                        <FaEdit className="icon" />
+                      </button>
+                    </>
                   )}
-                  <button
-                    type="button"
-                    className="btn edit-btn"
-                    onClick={() => handleEditStart(index)}
-                  >
-                    {editIndex === index ? (
-                      <FaRegSave className="icon" />
-                    ) : (
-                      <FaEdit className="icon" />
-                    )}
-                  </button>
                 </li>
               ))}
             </ul>
